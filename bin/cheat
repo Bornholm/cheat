@@ -1,0 +1,64 @@
+#!/usr/bin/env node
+var async = require('async');
+var helpers = require('../lib/helpers');
+
+var argv = require('optimist')
+      .usage('Show useful cheatsheets about commands. \nUsage: $0 [options] <command>')
+      .demand(1)
+      .boolean('v')
+      .alias('c', 'config')
+      .describe('c', 'Specify the config file to load')
+      .default('c', helpers.getUserConfigFile())
+      .argv;
+
+helpers.ensureUserConfig();
+
+var verbose = argv.v;
+var config = require(argv.config);
+var stores = config.stores || [];
+
+stores = stores.reduce(function(result, storeInfo) {
+  if(storeInfo) {
+    var module = storeInfo.module;
+    if(module) {
+      try {
+        var store =  require(module)(helpers, storeInfo.options || {}, verbose);
+        result.push(store);
+      } catch(err) {
+        if(verbose) {
+          console.error("Error while loading store " + module, err);
+        }
+      }
+    }
+  }
+  return result;
+}, []);
+
+var command = argv._.join(' ');
+
+async.forEachSeries(
+  stores,
+  function(store, next) {
+    var stream;
+    try {
+      var stream = store.get(command);
+      if(stream) {
+        stream.once('end', insertSeparator.bind(null, next));
+        stream.pipe(process.stdout, {end: false});
+      } else {
+        return insertSeparator(next);
+      }
+    } catch(err) {
+      if(verbose) {
+        console.error("Error while using store " + store.name, err);
+      }
+      return insertSeparator(next);
+    }
+  }
+);
+
+function insertSeparator(next) {
+  var separator = config.separator || '\n';
+  process.stdout.write(separator);
+  return next();
+}
