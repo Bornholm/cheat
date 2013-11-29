@@ -6,36 +6,33 @@ var HighligthStream = require('../lib/highlight-stream');
 var argv = require('optimist')
       .usage('Show useful cheatsheets about commands. \nUsage: $0 [options] <command>')
       .demand(1)
-      .boolean('v')
-      .alias('c', 'config')
-      .describe('c', 'Specify the config file to load')
-      .default('c', helpers.getUserConfigFile())
+      .options('v', {
+        alias: 'verbose',
+        default: false,
+        boolean: true,
+        describe: 'Verbose mode (show errors if any)'
+      })
+      .options('f', {
+        alias: 'fancy',
+        default: true,
+        boolean: true,
+        describe: 'Use ANSI colors, --no-fancy to disabled'
+      })
+      .options('c', {
+        alias: 'config',
+        default: helpers.getUserConfigFile(),
+        describe: 'Specify the config file to load'
+      })
       .argv;
 
 helpers.ensureUserConfig();
 
 var verbose = argv.v;
 var config = require(argv.config);
-var stores = config.stores || [];
-
-
-stores = stores.reduce(function(result, storeInfo) {
-  if(storeInfo) {
-    var module = storeInfo.module;
-    if(module) {
-      try {
-        var store =  require(module)(helpers, storeInfo.options || {}, verbose);
-        result.push(store);
-      } catch(err) {
-        if(verbose) {
-          console.error("Error while loading store " + module, err);
-        }
-      }
-    }
-  }
-  return result;
-}, []);
-
+var colorize = argv.fancy;
+var highlightConf = config.highlight || {};
+var storesConf = config.stores || [];
+var stores = helpers.loadAllStores(storesConf, verbose);
 var command = argv._.join(' ');
 
 async.forEachSeries(
@@ -46,12 +43,13 @@ async.forEachSeries(
       var stream = store.get(command);
       if(stream) {
         stream.once('end', insertSeparator.bind(null, next));
-        var highlighter = new HighligthStream();
-        stream
-          .pipe(highlighter)
-          .pipe(process.stdout, {end: false});
+        if(colorize) {
+          var highlighter = new HighligthStream(highlightConf);
+          stream = stream.pipe(highlighter)
+        }
+        stream.pipe(process.stdout, {end: false});
       } else {
-        return insertSeparator(next);
+        return next();
       }
     } catch(err) {
       if(verbose) {
