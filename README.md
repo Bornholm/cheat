@@ -65,6 +65,9 @@ Le store `http` utilise une requete HTTP afin de trouver les _cheatsheets_. Si `
   ]
 }
 ```
+## Licence
+
+[MIT](http://mit-license.org/)
 
 
 
