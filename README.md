@@ -8,6 +8,8 @@ Une implémentation de l'outil [cheat](https://github.com/chrisallenlane/cheat) 
 
 ## Installation
 
+_Testé avec NodeJS v0.10.22_
+
 ```
 git clone https://github.com/Bornholm/cheat.git
 cd cheat
