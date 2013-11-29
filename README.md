@@ -2,6 +2,8 @@
 
 Une implémentation de l'outil [cheat](https://github.com/chrisallenlane/cheat) en NodeJS.
 
+**/!\ En développement ! L'API n'est pas stable et peut évoluer régulièrement !**
+
 ## Installation
 
 ```
