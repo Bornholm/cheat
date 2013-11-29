@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 var async = require('async');
 var helpers = require('../lib/helpers');
+var HighligthStream = require('../lib/highlight-stream');
 
 var argv = require('optimist')
       .usage('Show useful cheatsheets about commands. \nUsage: $0 [options] <command>')
@@ -16,6 +17,7 @@ helpers.ensureUserConfig();
 var verbose = argv.v;
 var config = require(argv.config);
 var stores = config.stores || [];
+
 
 stores = stores.reduce(function(result, storeInfo) {
   if(storeInfo) {
@@ -44,7 +46,10 @@ async.forEachSeries(
       var stream = store.get(command);
       if(stream) {
         stream.once('end', insertSeparator.bind(null, next));
-        stream.pipe(process.stdout, {end: false});
+        var highlighter = new HighligthStream();
+        stream
+          .pipe(highlighter)
+          .pipe(process.stdout, {end: false});
       } else {
         return insertSeparator(next);
       }
