@@ -16,7 +16,7 @@ var argv = require('optimist')
         alias: 'fancy',
         default: true,
         boolean: true,
-        describe: 'Use ANSI colors, --no-fancy to disabled'
+        describe: 'Use ANSI colors, --no-fancy to disable'
       })
       .options('c', {
         alias: 'config',
