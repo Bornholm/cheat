@@ -14,6 +14,7 @@ cd cheat
 sudo npm link
 cheat
 ```
+_Procédure temporaire le temps de publier le module sur NPM..._
 
 ## Configuration
 
