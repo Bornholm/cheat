@@ -1,20 +1,36 @@
 #!/usr/bin/env node
 var async = require('async');
 var helpers = require('../lib/helpers');
+var HighligthStream = require('../lib/highlight-stream');
 
 var argv = require('optimist')
       .usage('Show useful cheatsheets about commands. \nUsage: $0 [options] <command>')
       .demand(1)
-      .boolean('v')
-      .alias('c', 'config')
-      .describe('c', 'Specify the config file to load')
-      .default('c', helpers.getUserConfigFile())
+      .options('v', {
+        alias: 'verbose',
+        default: false,
+        boolean: true,
+        describe: 'Verbose mode (show errors if any)'
+      })
+      .options('f', {
+        alias: 'fancy',
+        default: true,
+        boolean: true,
+        describe: 'Use ANSI colors, --no-fancy to disabled'
+      })
+      .options('c', {
+        alias: 'config',
+        default: helpers.getUserConfigFile(),
+        describe: 'Specify the config file to load'
+      })
       .argv;
 
 helpers.ensureUserConfig();
 
 var verbose = argv.v;
 var config = require(argv.config);
+var colorize = argv.fancy;
+var highlightConf = config.highlight || {};
 var storesConf = config.stores || [];
 var stores = helpers.loadAllStores(storesConf, verbose);
 var command = argv._.join(' ');
@@ -27,6 +43,10 @@ async.forEachSeries(
       var stream = store.get(command);
       if(stream) {
         stream.once('end', insertSeparator.bind(null, next));
+        if(colorize) {
+          var highlighter = new HighligthStream(highlightConf);
+          stream = stream.pipe(highlighter)
+        }
         stream.pipe(process.stdout, {end: false});
       } else {
         return next();

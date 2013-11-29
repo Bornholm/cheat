@@ -1,4 +1,8 @@
 {
+  "highlight": {
+    "color": "blue",
+    "style": "bold"
+  },
   "separator": "\n",
   "stores": [
     {
