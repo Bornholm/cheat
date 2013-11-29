@@ -29,7 +29,7 @@ async.forEachSeries(
         stream.once('end', insertSeparator.bind(null, next));
         stream.pipe(process.stdout, {end: false});
       } else {
-        return insertSeparator(next);
+        return next();
       }
     } catch(err) {
       if(verbose) {
