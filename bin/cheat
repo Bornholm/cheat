@@ -15,25 +15,8 @@ helpers.ensureUserConfig();
 
 var verbose = argv.v;
 var config = require(argv.config);
-var stores = config.stores || [];
-
-stores = stores.reduce(function(result, storeInfo) {
-  if(storeInfo) {
-    var module = storeInfo.module;
-    if(module) {
-      try {
-        var store =  require(module)(helpers, storeInfo.options || {}, verbose);
-        result.push(store);
-      } catch(err) {
-        if(verbose) {
-          console.error("Error while loading store " + module, err);
-        }
-      }
-    }
-  }
-  return result;
-}, []);
-
+var storesConf = config.stores || [];
+var stores = helpers.loadAllStores(storesConf, verbose);
 var command = argv._.join(' ');
 
 async.forEachSeries(
