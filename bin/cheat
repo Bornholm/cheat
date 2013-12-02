@@ -21,7 +21,7 @@ var argv = require('optimist')
       .options('c', {
         alias: 'config',
         default: helpers.getUserConfigFile(),
-        describe: 'Specify the config file to load'
+        describe: 'Override the config file'
       })
       .argv;
 
