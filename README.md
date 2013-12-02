@@ -4,7 +4,6 @@ Une implémentation de l'outil [cheat](https://github.com/chrisallenlane/cheat) 
 
 ![Exemple](img/screen.png)
 
-**/!\ En développement ! L'API n'est pas stable et peut évoluer régulièrement !**
 
 ## Installation
 
@@ -22,7 +21,6 @@ cd cheat
 sudo npm link
 cheat
 ```
-_Procédure temporaire le temps de publier le module sur NPM..._
 
 ## Configuration
 
