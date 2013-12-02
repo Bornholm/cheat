@@ -10,6 +10,12 @@ Une implémentation de l'outil [cheat](https://github.com/chrisallenlane/cheat) 
 
 _Testé avec NodeJS v0.10.22_
 
+### Utilisateur
+```
+sudo npm install cheat -g
+```
+
+### Développeur
 ```
 git clone https://github.com/Bornholm/cheat.git
 cd cheat
