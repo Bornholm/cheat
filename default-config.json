@@ -1,0 +1,19 @@
+{
+  "highlight": {
+    "color": "blue",
+    "style": "bold"
+  },
+  "separator": "\n",
+  "stores": [
+    {
+      "module": "../lib/stores/local",
+      "options": {}
+    },
+    {
+      "module": "../lib/stores/http",
+      "options": {
+        "endpoint": "https://raw.github.com/chrisallenlane/cheat/master/cheatsheets/%s"
+      }
+    }
+  ]
+}
