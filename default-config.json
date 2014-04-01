@@ -6,11 +6,11 @@
   "separator": "\n",
   "stores": [
     {
-      "module": "../lib/stores/local",
+      "module": "local",
       "options": {}
     },
     {
-      "module": "../lib/stores/http",
+      "module": "http",
       "options": {
         "endpoint": "https://raw.github.com/chrisallenlane/cheat/master/cheatsheets/%s"
       }
