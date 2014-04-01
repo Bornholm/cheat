@@ -41,7 +41,7 @@ Le store `local` reproduit  globalement le comportement de l'outil _cheat_ initi
 {
   "stores": [
     {
-      "module": "../lib/stores/local",
+      "module": "local",
       "options": {
         "dir": "/home/user/my_cheatsheets"
       }
@@ -52,7 +52,7 @@ Le store `local` reproduit  globalement le comportement de l'outil _cheat_ initi
 
 ### http
 
-Le store `http` utilise une requete HTTP afin de trouver les _cheatsheets_. Si `200 <= statusCode < 400`, le contenu de la réponse est affiché.
+Le store `http` utilise une requete HTTP afin de trouver les _cheatsheets_. Si `200 <= statusCode < 400` et que le header `Content-Type` de la réponse est `text/plain`, le contenu de la réponse est affiché.
 
 **Options**
 - **endpoint** [Requis] L'URL de recherche des _cheatsheets_. Le token `%s` sera automatiquement remplacé par la commande recherchée.
@@ -63,7 +63,7 @@ Le store `http` utilise une requete HTTP afin de trouver les _cheatsheets_. Si `
 {
   "stores": [
     {
-      "module": "../lib/stores/http",
+      "module": "http",
       "options": {
         "endpoint": "https://raw.github.com/chrisallenlane/cheat/master/cheatsheets/%s"
       }
