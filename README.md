@@ -11,7 +11,7 @@ _Testé avec NodeJS v0.10.22_
 
 ### Utilisateur
 ```
-sudo npm install cheat -g
+sudo npm install cheat@lastest -g
 ```
 
 ### Développeur
