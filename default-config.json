@@ -12,7 +12,7 @@
     {
       "module": "http",
       "options": {
-        "endpoint": "https://raw.github.com/chrisallenlane/cheat/master/cheatsheets/%s"
+        "endpoint": "https://raw.githubusercontent.com/chrisallenlane/cheat/master/cheat/cheatsheets/%s"
       }
     }
   ]
