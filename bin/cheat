@@ -3,6 +3,8 @@ var async = require('async');
 var helpers = require('../lib/helpers');
 var HighligthStream = require('../lib/highlight-stream');
 
+helpers.ensureUserConfig();
+
 var argv = require('optimist')
       .usage('Show useful cheatsheets about commands. \nUsage: $0 [options] <command>')
       .demand(1)
@@ -24,8 +26,6 @@ var argv = require('optimist')
         describe: 'Override the config file'
       })
       .argv;
-
-helpers.ensureUserConfig();
 
 var verbose = argv.v;
 var config = require(argv.config);
